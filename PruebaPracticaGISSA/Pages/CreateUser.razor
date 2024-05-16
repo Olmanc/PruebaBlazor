@@ -1,0 +1,18 @@
+﻿@page "/create"
+
+@using PruebaPracticaGISSA.Data
+@layout PruebaPracticaGISSA.Shared.BlankLayout;
+
+@inject DbService DbService;
+
+<PageTitle>Crear Usuario</PageTitle>
+
+<h3 style="text-align:center">Crear Usuario</h3>
+
+<UserForm @ref="userForm" OnAction="OnCreateUser" OnShowMessage="HandleShowMessage" User="User"></UserForm>
+
+
+@if (messageShown)
+{
+    <MessageWindow title="@messageTitle" message="@messageBody" type="@messageType" imageUrl="@messageImage" OnClose="hideMessage"></MessageWindow>
+}

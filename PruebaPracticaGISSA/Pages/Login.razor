@@ -1,0 +1,34 @@
+﻿@using PruebaPracticaGISSA.Data
+
+@inject NavigationManager Navigation;
+@* @inject ILoginService loginService; *@
+@inject DbService DbService;
+
+<div class="my-form__wrapper">
+    <div class="my-form">
+        <div class="text-field">
+            <label for="usuario">Usuario:</label>
+            <input type="text" id="usuario" @bind="@user.user" name="usuario" placeholder="Usuario" required="">
+        </div>
+        <div class="text-field">
+            <label for="password">Contraseña:</label>
+            <input id="password" type="password" name="password" placeholder="Contraseña" @bind="@user.pass" required="">
+        </div>
+        <button class="my-form__button" @onclick="validateUser">Iniciar Sesión</button>
+
+        <div class="my-form__actions">
+            <div class="my-form__row">
+                <span>Olvidó su clave?</span>
+                <a title="Olvide Clave" @onclick="HandleForgotPassword">
+                    Olvidé mi clave
+                </a>
+            </div>
+            <div class="my-form__signup">
+                <a title="Crear Cuenta" @onclick="HandleCreateAccount">
+                    Crear Cuenta
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+

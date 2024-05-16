@@ -1,0 +1,99 @@
+﻿<style>
+    .message-window {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        max-width: 400px;
+        height: auto;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+        .message-window header {
+            background-color: inherit;
+            padding: 10px;
+            /* border-bottom: 1px solid #ccc; */
+            border-radius: 5px 5px 0 0;
+        }
+
+        .message-window h4 {
+            margin: 0;
+            font-weight:bolder;
+        }
+
+        .message-window .body {
+            padding: 10px;
+            display: grid;
+            place-items: center;
+        }
+
+        .message-window p {
+            margin: 0;
+            padding: 20px;
+        }
+
+        .message-window img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 10px;
+            padding: 20px;
+        }
+
+        .message-window button {
+            margin-top: 10px;
+            padding: 5px 10px;
+            /* background-color: #007bff; */
+            background-color: #0c1d24;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .message-window.success {
+            /* background-color: #d4edda; */
+            background-color: #31bd4b;
+            color: white;
+        }
+
+        .message-window.info {
+            /* background-color: #cce5ff; */
+            background-color: #317cbd;
+            color:white;
+        }
+
+        .message-window.error {
+            /* background-color: #f8d7da; */
+            background-color: #bf1b1b;
+            color: white;
+        }
+
+        .message-window.warning {
+            /* background-color: #fff3cd; */
+            background-color: #e3af2b;
+            color: white;
+        }
+</style>
+
+
+
+<div class="message-window @GetStyle()">
+    <header>
+        <h4>@title</h4>
+    </header>
+    <div class="body">
+        <p>@message</p>
+        @if (!String.IsNullOrEmpty(imageUrl))
+        {
+            <img src="@imageUrl" alt="aquí debería haber una imagen" />
+        }
+        <button @onclick="OnClose">Aceptar</button>
+    </div>
+</div>
+

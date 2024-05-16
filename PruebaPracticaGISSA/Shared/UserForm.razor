@@ -1,0 +1,201 @@
+﻿@using PruebaPracticaGISSA.Data;
+@inject DbService DbService;
+
+<style>
+    body {
+        font-family: Arial;
+    }
+
+    input[type=text], [type=password], [type=email], select {
+        width: 100%;
+        padding: 6px 10px;
+        margin: 4px 0;
+        display: block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    input[type=submit] {
+        width: 100%;
+        background-color: #04AA6D;
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    input[type=submit]:hover {
+        background-color: #45a049;
+    }
+
+    div.container {
+        border-radius: 15px;
+        background-color: #f2f2f2;
+        padding: 20px;
+        max-width:75%;
+    }
+
+    .container {
+        border-radius: 15px;
+        background-color: #f2f2f2;
+        padding: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: flex-start;
+    }
+
+    .field {
+        max-width: 400px;
+        width: 100%;
+        margin: 0 4px 4px;
+        box-sizing: border-box;
+        padding: 0 10px;
+
+
+    }
+
+    @@media (min-width: 600px) {
+        .field {
+            width: calc(50% - 20px);
+            margin-right: 20px;
+            float: left;
+            clear: none;
+        }
+
+        div.container {
+            border-radius: 15px;
+            background-color: #f2f2f2;
+            padding: 20px;
+        }
+    }
+
+    .field:nth-child(2n) {
+        margin-right: 0;
+    }
+
+    .habilidades-box {
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 10px;
+        max-height: 200px;
+        overflow-y: auto;
+        background-color:white;
+        border-radius: 10px;
+    }
+
+    .habilidades-box > div {
+        margin-bottom: 8px;
+    }
+
+    .field:nth-last-child(1) .habilidades-box {
+        max-height: none;
+        overflow-y: visible;
+    }
+
+    ul{
+        margin-top: 20px;
+        padding: 0;
+    }
+
+</style>
+
+@if (User != null)
+{
+    <div class="container">
+        <div class="field">
+            <label for="idTipoIdentificacion">Tipo de Identificación:</label>
+            <select id="idTipoIdentificacion" @bind="User.IdTipoIdentificacion">
+                @foreach (var tipoIdentificacion in catalogoTipoIdentificacion)
+                {
+                    <option value="@tipoIdentificacion.Id">@tipoIdentificacion.Detalle</option>
+                }
+            </select>
+        </div>
+
+        <div class="field">
+            <label for="numeroIdentificacion">Número de Identificación:</label>
+            <input id="numeroIdentificacion" type="text" @bind="User.NumeroIdentificacion"/>
+        </div>
+
+        <div class="field">
+            <label for="nombre">Nombre:</label>
+            <input id="nombre" type="text" @bind="User.Nombre" />
+        </div>
+
+        <div class="field">
+            <label for="primerApellido">Primer Apellido:</label>
+            <input id="primerApellido" type="text" @bind="User.PrimerApellido" />
+        </div>
+
+        <div class="field">
+            <label for="segundoApellido">Segundo Apellido:</label>
+            <input id="segundoApellido" type="text" @bind="User.SegundoApellido" />
+        </div>
+
+        <div class="field">
+            <label for="idTipoUsuario">Tipo de Usuario:</label>
+            <select id="idTipoUsuario" @bind="User.IdTipoUsuario">
+                @foreach (var tipoUsuario in catalogoTipoUsuario)
+                {
+                    <option value="@tipoUsuario.Id">@tipoUsuario.Detalle</option>
+                }
+            </select>
+        </div>
+
+        <div class="field">
+            <label for="usuario">Usuario:</label>
+            <input id="usuario" type="text" @bind="User.Usuario" />
+        </div>
+
+        <div class="field">
+            <label for="clave">Clave:</label>
+            <input id="clave" type="password" @bind="User.Clave" />
+        </div>
+
+        <div class="field">
+            <label for="correo">Correo:</label>
+            <input id="correo" type="email" @bind="User.Correo" />
+        </div>
+        <div class="field"></div>        
+    </div>
+
+    <div class="container">
+        <div class="field">
+            <label for="telefono">Teléfono:</label>
+            <input id="telefono" type="text" @bind="Telefono" />
+            <button @onclick="AddPhone">Agregar</button>
+            <ul>
+                @foreach (var telefono in User.Telefonos)
+                {
+                    <PhoneElement Telefono="@telefono" OnDelete="DeletePhone"></PhoneElement>
+                }
+            </ul>
+        </div>
+
+        <div class="field">
+            <label for="habilidades">Habilidades (seleccione al menos 3):</label>
+            <div class="habilidades-box">
+                @foreach (var habilidad in catalogoHabilidades)
+                {
+                    <div>
+                        <input id="@habilidad.Id" type="checkbox" value="@habilidad.Id" @onchange="@(e => ToggleHabilidad(habilidad.Id, e.Value.ToString()))" checked="@habilidad.Seleccionado" />
+                        <label for="@habilidad.Id">@habilidad.Detalle</label>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="field"></div>
+        <div class="field">
+            <button type="submit" @onclick="SubmitForm">Submit</button>
+        </div>
+    </div>
+    
+}
+else
+{
+    <p>Loading...</p>
+}

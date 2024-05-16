@@ -1,0 +1,34 @@
+﻿@page "/users";
+
+@using PruebaPracticaGISSA.Data;
+@inject DbService DbService;
+
+<style>
+    body{
+        background-color:white !important;
+    }
+</style>
+
+<PageTitle>Usuarios</PageTitle>
+
+<H3>Usuarios</H3>
+@if (ShowUserList)
+{
+    <CardList users="Users" OnSelectedCard="HandleCardSelected" OnComponentUpdate="UpdateComponent"></CardList>
+
+    <br />
+    <br />
+    <br />
+    <br />
+}
+
+
+@if (ShowUserForm)
+{
+    <UserForm user="@SelectedUser" OnAction="OnUpdateUser" OnShowMessage="HandleShowMessage"></UserForm>
+}
+
+@if (messageShown)
+{
+    <MessageWindow title="@messageTitle" message="@messageBody" type="@messageType" imageUrl="@messageImage" OnClose="hideMessage"></MessageWindow>
+}

@@ -1,10 +1,13 @@
 using Microsoft.AspNetCore.Components;
+using PruebaPracticaGISSA.Authentication;
+using PruebaPracticaGISSA.Data;
 using PruebaPracticaGISSA.Models;
 
 namespace PruebaPracticaGISSA.Pages
 {
     public partial class Login
     {
+
         //public  string[] elementos {  get; set; }
         //public TestService TestService { get; set; }
         [Parameter]
@@ -20,7 +23,16 @@ namespace PruebaPracticaGISSA.Pages
         private async Task validateUser()
         {
             var loginResult = DbService.ValidateUserLogin(user);//await loginService.Login(user);
-            await OnLoginResult.InvokeAsync(loginResult);
+            if (loginResult.Rows.Count > 0)
+            {
+                var customAuthStateProvider = (CustomAuthenticationProvider)authStateProvider;
+                await customAuthStateProvider.UpdateAuthenticationState(new UserSession
+                {
+                    Usuario = loginResult.Rows[0]["Usuario"].ToString(),
+                    TipoUsuario = loginResult.Rows[0]["IdTipoUsuario"].ToString()
+                });
+            }
+            await OnLoginResult.InvokeAsync(loginResult.Rows.Count > 0);
         }
 
         private async Task HandleForgotPassword()
@@ -33,5 +45,6 @@ namespace PruebaPracticaGISSA.Pages
             //await OnCreateAccount.InvokeAsync();
             Navigation.NavigateTo("create");
         }
+
     }
 }

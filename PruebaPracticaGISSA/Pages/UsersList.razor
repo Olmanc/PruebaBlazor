@@ -3,6 +3,8 @@
 @using PruebaPracticaGISSA.Data;
 @inject DbService DbService;
 
+@attribute [Authorize(Roles = "1")]
+
 <style>
     body{
         background-color:white !important;
@@ -11,7 +13,7 @@
 
 <PageTitle>Usuarios</PageTitle>
 
-<H3>Usuarios</H3>
+<H3 style="text-align:center; color: white; font-size:2.4rem">Usuarios</H3>
 @if (ShowUserList)
 {
     <CardList users="Users" OnSelectedCard="HandleCardSelected" OnComponentUpdate="UpdateComponent"></CardList>

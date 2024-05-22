@@ -5,7 +5,7 @@ using static PruebaPracticaGISSA.Shared.MessageWindow;
 
 namespace PruebaPracticaGISSA.Pages
 {
-    public partial class CreateUser
+    public partial class CreateUser2
     {
         public UserModel User { get; set; } = new UserModel();
 

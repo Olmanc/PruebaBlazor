@@ -3,6 +3,8 @@ using PruebaPracticaGISSA.Models;
 using static PruebaPracticaGISSA.Shared.MessageWindow;
 using System.Text.RegularExpressions;
 using Microsoft.IdentityModel.Tokens;
+using PruebaPracticaGISSA.Data;
+using Radzen;
 
 namespace PruebaPracticaGISSA.Shared
 {
@@ -21,6 +23,9 @@ namespace PruebaPracticaGISSA.Shared
 
         public List<string> ListaHabilidades { get; set; }= new List<string>();
 
+        private bool showNotification = false;
+        public string NotificationMessage { get; set; }
+        public NotificationType NotificationType { get; set; }
 
         public void ResetUser()
         {
@@ -114,10 +119,12 @@ namespace PruebaPracticaGISSA.Shared
 
         private async void SubmitForm()
         {
-            //if (!ValidateFields())
-            //{
-            //    return;
-            //}
+            //ShowNotification("Prueba", NotificationType.Warning);
+            if (!ValidateFields())
+            {
+                return;
+            }
+            showNotification = false;
             await OnAction.InvokeAsync(User);            
         }
 
@@ -130,56 +137,81 @@ namespace PruebaPracticaGISSA.Shared
             Telefono = "";
         }
 
-        public async Task<bool> ValidateFields()
+        public bool ValidateFields()
         {
             try
             {
                 if(User.IdTipoIdentificacion == 0)
                 {
-                    MessageWindowModel msg = new MessageWindowModel("Validacion", "", "", MessageType.Error);
-                    await OnShowMessage.InvokeAsync(msg);
+                    ShowNotification("Debe indicar el Tipo de Identificación.", NotificationType.Warning);
                     return false;
                 }
                 if (User.NumeroIdentificacion.IsNullOrEmpty())
                 {
-                    MessageWindowModel msg = new MessageWindowModel("Validacion", "", "", MessageType.Error);
-                    await OnShowMessage.InvokeAsync(msg);
+                    ShowNotification("Debe indicar el Número de Identificación.", NotificationType.Warning);
+                    return false;
+                }
+                if(User.IdTipoIdentificacion == 1 && User.NumeroIdentificacion.Trim().Length != 9)
+                {
+                    ShowNotification("El Número de Identificación debe tener 9 dígitos si es Nacional.", NotificationType.Warning);
                     return false;
                 }
                 if(User.Nombre.IsNullOrEmpty() || User.PrimerApellido.IsNullOrEmpty() || User.SegundoApellido.IsNullOrEmpty())
                 {
-                    MessageWindowModel msg = new MessageWindowModel("Validacion", "", "", MessageType.Error);
-                    await OnShowMessage.InvokeAsync(msg);
+                    ShowNotification("Debe indicar el Nombre Completo.", NotificationType.Warning);
                     return false;
                 }
                 if(User.IdTipoUsuario == 0)
                 {
-                    MessageWindowModel msg = new MessageWindowModel("Validacion", "", "", MessageType.Error);
-                    await OnShowMessage.InvokeAsync(msg);
+                    ShowNotification("Debe indicar el Tipo de Usuario.", NotificationType.Warning);
                     return false;
                 }
                 if(User.Usuario.IsNullOrEmpty() || User.Clave.IsNullOrEmpty())
                 {
-                    MessageWindowModel msg = new MessageWindowModel("Validacion", "", "", MessageType.Error);
-                    await OnShowMessage.InvokeAsync(msg);
+                    ShowNotification("Debe indicar un Usuario y una Clave.", NotificationType.Warning);
+                    return false;
+                }
+                if (!Regex.IsMatch(User.Clave, @"^[a-zA-Z0-9]{6,}$"))
+                {
+                    ShowNotification("La Clave debe tener un mínimo de 6 characteres alphanumericos.", NotificationType.Warning);
                     return false;
                 }
                 if (User.Correo.IsNullOrEmpty())
                 {
-                    MessageWindowModel msg = new MessageWindowModel("Validacion", "Debe ingresar un correo válido.", "", MessageType.Error);
-                    await OnShowMessage.InvokeAsync(msg);
+                    ShowNotification("Debe indicar un Correo.", NotificationType.Warning);
+                    return false;
+                }
+                if (!Regex.IsMatch(User.Correo, @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"))
+                {
+                    ShowNotification("Debe indicar un Correo válido.", NotificationType.Warning);
+                    return false;
+                }
+                if(User.Telefonos.Count <= 1)
+                {
+                    ShowNotification("Debe indicar más de un Teléfono.", NotificationType.Warning);
                     return false;
                 }
                 if(User.Habilidades.Count < 3)
                 {
-                    MessageWindowModel msg = new MessageWindowModel("Validacion", "Debe seleccionar al menos 3 habilidades.", "", MessageType.Error);
-                    await OnShowMessage.InvokeAsync(msg);
+                    ShowNotification("Debe indicar al menos 3 Habilidades.", NotificationType.Warning);
                     return false;
                 }
                 return true;
             }catch(Exception ex) { 
                 return false;
             }
+        }
+
+        private void HandleNotificationClose()
+        {
+            showNotification = false;
+        }
+
+        private void ShowNotification(string message, NotificationType type)
+        {
+            NotificationMessage = message;
+            NotificationType = type;
+            showNotification = true;
         }
     }
 }

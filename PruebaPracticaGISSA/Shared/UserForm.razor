@@ -1,5 +1,8 @@
 ﻿@using PruebaPracticaGISSA.Data;
+@using PruebaPracticaGISSA.Models
 @inject DbService DbService;
+@* @inject ToastService ToastService
+@inject NotificationService Notification; *@
 
 <style>
     body {
@@ -11,9 +14,20 @@
         padding: 6px 10px;
         margin: 4px 0;
         display: block;
-        border: 1px solid #ccc;
+        border: 1px solid rgba(73, 120, 240, 0.5);
         border-radius: 4px;
         box-sizing: border-box;
+        background-color:transparent;
+    }
+
+    input[type=text]:focus,
+    input[type=password]:focus,
+    input[type=email]:focus,
+    select:focus {
+        border-color: #4978F0;
+        box-shadow: 0 0 5px rgba(73, 120, 240, 0.5);
+        outline: none;
+        background-color:aliceblue;
     }
 
     input[type=submit] {
@@ -33,14 +47,16 @@
 
     div.container {
         border-radius: 15px;
-        background-color: #f2f2f2;
+        /* background-color: #f2f2f2; */
+        background-color: rgba(240, 240, 240, 0.7);
         padding: 20px;
         max-width:75%;
     }
 
     .container {
         border-radius: 15px;
-        background-color: #f2f2f2;
+        /* background-color: #f2f2f2; */
+        background-color: rgba(240, 240, 240, 0.7);
         padding: 20px;
         display: flex;
         flex-wrap: wrap;
@@ -68,7 +84,8 @@
 
         div.container {
             border-radius: 15px;
-            background-color: #f2f2f2;
+            /* background-color: #f2f2f2; */
+            background-color: rgba(240, 240, 240, 0.7);
             padding: 20px;
         }
     }
@@ -83,7 +100,7 @@
         padding: 10px;
         max-height: 200px;
         overflow-y: auto;
-        background-color:white;
+        background-color: rgba(240, 240, 240, 0.1);
         border-radius: 10px;
     }
 
@@ -101,98 +118,146 @@
         padding: 0;
     }
 
+
+    button.submit {
+        background-color: #4978F0;
+        color: white;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 10px 20px;
+        border-radius: 25px;
+        margin: 10px 50% 10px 50%;
+        font-size: large;
+    }
+
+    button.submit:hover {
+        background-color: #3b66cc;
+    }
+
+    button.submit:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(73, 120, 240, 0.4);
+    }
+
+    button.add-phone {
+        background-color: #e1eef5;
+        color: #4978F0;
+        /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
+        margin: 5px 50% 5px 50%;
+        padding: 5px 10px;
+        border-radius: 10px;
+    }
+
+    button.add-phone:hover {
+        background-color: #cce0f0;
+    }
+
+    button.add-phone:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(225, 238, 245, 0.4);
+    }
+
 </style>
 
 @if (User != null)
 {
-    <div class="container">
-        <div class="field">
-            <label for="idTipoIdentificacion">Tipo de Identificación:</label>
-            <select id="idTipoIdentificacion" @bind="User.IdTipoIdentificacion">
-                @foreach (var tipoIdentificacion in catalogoTipoIdentificacion)
-                {
-                    <option value="@tipoIdentificacion.Id">@tipoIdentificacion.Detalle</option>
-                }
-            </select>
+    @if (showNotification)
+    {
+        <TopNotification Message="@NotificationMessage" Type="@NotificationType" IsVisible="showNotification" OnClose="HandleNotificationClose" />
+    }
+    
+
+    <div>
+        <div class="container">
+            <div class="field">
+                <label for="idTipoIdentificacion">Tipo de Identificación:</label>
+                <select id="idTipoIdentificacion" @bind="User.IdTipoIdentificacion">
+                    @foreach (var tipoIdentificacion in catalogoTipoIdentificacion)
+                    {
+                        <option value="@tipoIdentificacion.Id">@tipoIdentificacion.Detalle</option>
+                    }
+                </select>
+            </div>
+
+            <div class="field">
+                <label for="numeroIdentificacion">Número de Identificación:</label>
+                <input id="numeroIdentificacion" type="text" @bind="User.NumeroIdentificacion" />
+            </div>
+
+            <div class="field">
+                <label for="nombre">Nombre:</label>
+                <input id="nombre" type="text" @bind="User.Nombre" />
+            </div>
+
+            <div class="field">
+                <label for="primerApellido">Primer Apellido:</label>
+                <input id="primerApellido" type="text" @bind="User.PrimerApellido" />
+            </div>
+
+            <div class="field">
+                <label for="segundoApellido">Segundo Apellido:</label>
+                <input id="segundoApellido" type="text" @bind="User.SegundoApellido" />
+            </div>
+
+            <div class="field">
+                <label for="idTipoUsuario">Tipo de Usuario:</label>
+                <select id="idTipoUsuario" @bind="User.IdTipoUsuario">
+                    @foreach (var tipoUsuario in catalogoTipoUsuario)
+                    {
+                        <option value="@tipoUsuario.Id">@tipoUsuario.Detalle</option>
+                    }
+                </select>
+            </div>
+
+            <div class="field">
+                <label for="usuario">Usuario:</label>
+                <input id="usuario" type="text" @bind="User.Usuario" />
+            </div>
+
+            <div class="field">
+                <label for="clave">Clave:</label>
+                <input id="clave" type="password" @bind="User.Clave" />
+            </div>
+
+            <div class="field">
+                <label for="correo">Correo:</label>
+                <input id="correo" type="email" @bind="User.Correo" />
+            </div>
+            <div class="field"></div>
         </div>
 
-        <div class="field">
-            <label for="numeroIdentificacion">Número de Identificación:</label>
-            <input id="numeroIdentificacion" type="text" @bind="User.NumeroIdentificacion"/>
-        </div>
+        <div class="container">
+            <div class="field">
+                <label for="telefono">Teléfono:</label>
+                <input id="telefono" type="text" @bind="Telefono" />
+                <button class="add-phone" @onclick="AddPhone">Agregar</button>
+                <ul>
+                    @foreach (var telefono in User.Telefonos)
+                    {
+                        <PhoneElement Telefono="@telefono" OnDelete="DeletePhone"></PhoneElement>
+                    }
+                </ul>
+            </div>
 
-        <div class="field">
-            <label for="nombre">Nombre:</label>
-            <input id="nombre" type="text" @bind="User.Nombre" />
-        </div>
-
-        <div class="field">
-            <label for="primerApellido">Primer Apellido:</label>
-            <input id="primerApellido" type="text" @bind="User.PrimerApellido" />
-        </div>
-
-        <div class="field">
-            <label for="segundoApellido">Segundo Apellido:</label>
-            <input id="segundoApellido" type="text" @bind="User.SegundoApellido" />
-        </div>
-
-        <div class="field">
-            <label for="idTipoUsuario">Tipo de Usuario:</label>
-            <select id="idTipoUsuario" @bind="User.IdTipoUsuario">
-                @foreach (var tipoUsuario in catalogoTipoUsuario)
-                {
-                    <option value="@tipoUsuario.Id">@tipoUsuario.Detalle</option>
-                }
-            </select>
-        </div>
-
-        <div class="field">
-            <label for="usuario">Usuario:</label>
-            <input id="usuario" type="text" @bind="User.Usuario" />
-        </div>
-
-        <div class="field">
-            <label for="clave">Clave:</label>
-            <input id="clave" type="password" @bind="User.Clave" />
-        </div>
-
-        <div class="field">
-            <label for="correo">Correo:</label>
-            <input id="correo" type="email" @bind="User.Correo" />
-        </div>
-        <div class="field"></div>        
-    </div>
-
-    <div class="container">
-        <div class="field">
-            <label for="telefono">Teléfono:</label>
-            <input id="telefono" type="text" @bind="Telefono" />
-            <button @onclick="AddPhone">Agregar</button>
-            <ul>
-                @foreach (var telefono in User.Telefonos)
-                {
-                    <PhoneElement Telefono="@telefono" OnDelete="DeletePhone"></PhoneElement>
-                }
-            </ul>
-        </div>
-
-        <div class="field">
-            <label for="habilidades">Habilidades (seleccione al menos 3):</label>
-            <div class="habilidades-box">
-                @foreach (var habilidad in catalogoHabilidades)
-                {
-                    <div>
-                        <input id="@habilidad.Id" type="checkbox" value="@habilidad.Id" @onchange="@(e => ToggleHabilidad(habilidad.Id, e.Value.ToString()))" checked="@habilidad.Seleccionado" />
-                        <label for="@habilidad.Id">@habilidad.Detalle</label>
-                    </div>
-                }
+            <div class="field">
+                <label for="habilidades">Habilidades (seleccione al menos 3):</label>
+                <div class="habilidades-box">
+                    @foreach (var habilidad in catalogoHabilidades)
+                    {
+                        <div>
+                            <input id="@habilidad.Id" type="checkbox" value="@habilidad.Id" @onchange="@(e => ToggleHabilidad(habilidad.Id, e.Value.ToString()))" checked="@habilidad.Seleccionado" />
+                            <label for="@habilidad.Id">@habilidad.Detalle</label>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="field"></div>
+            <div class="field">
+                <button class="submit" type="submit" @onclick="SubmitForm">Guardar</button>
             </div>
         </div>
-        <div class="field"></div>
-        <div class="field">
-            <button type="submit" @onclick="SubmitForm">Submit</button>
-        </div>
     </div>
+        
+    
     
 }
 else

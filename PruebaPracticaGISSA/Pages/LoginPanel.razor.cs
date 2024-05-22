@@ -1,5 +1,6 @@
 using PruebaPracticaGISSA.Shared;
 using PruebaPracticaGISSA.Models;
+using PruebaPracticaGISSA.Authentication;
 
 namespace PruebaPracticaGISSA.Pages
 {
@@ -12,12 +13,12 @@ namespace PruebaPracticaGISSA.Pages
         private string messageImage = string.Empty;
         private MessageWindow.MessageType messageType;
 
-        private void HandleLoginResult(bool result)
+        private async void HandleLoginResult(bool result)
         {
             if (result)
             {
                 showMessage("Login", "Usuario logueado correctamente.", "", MessageWindow.MessageType.Success);
-                Navigation.NavigateTo("");
+                Navigation.NavigateTo("", true);
             }
             else
             {

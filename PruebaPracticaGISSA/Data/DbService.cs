@@ -120,7 +120,7 @@ namespace PruebaPracticaGISSA.Data
             }
         }
 
-        public bool ValidateUserLogin(LoginModel login)
+        public DataTable ValidateUserLogin(LoginModel login)
         {
             try
             {
@@ -130,7 +130,7 @@ namespace PruebaPracticaGISSA.Data
                     new SqlParameter("@clave", login.pass)
                 });
 
-                return userFound.Rows.Count > 0;
+                return userFound;
             }
             catch (Exception ex)
             {

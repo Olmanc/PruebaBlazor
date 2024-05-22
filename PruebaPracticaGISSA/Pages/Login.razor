@@ -1,8 +1,12 @@
 ﻿@using PruebaPracticaGISSA.Data
+@using PruebaPracticaGISSA.Models
 
 @inject NavigationManager Navigation;
 @* @inject ILoginService loginService; *@
 @inject DbService DbService;
+
+@inject AuthenticationStateProvider authStateProvider;
+@using PruebaPracticaGISSA.Authentication;
 
 <div class="my-form__wrapper">
     <div class="my-form">
@@ -31,4 +35,6 @@
         </div>
     </div>
 </div>
+
+
 

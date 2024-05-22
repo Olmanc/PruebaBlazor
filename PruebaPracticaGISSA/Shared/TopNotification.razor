@@ -1,0 +1,55 @@
+﻿<style>
+    .notification {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
+        padding: 1rem;
+        text-align: center;
+        font-size: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .notification .message {
+        flex-grow: 1;
+    }
+
+    .notification .close {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: inherit;
+    }
+
+    .notification.success {
+        background-color: #4caf50;
+        color: white;
+    }
+
+    .notification.error {
+        background-color: #f44336;
+        color: white;
+    }
+
+    .notification.warning {
+        background-color: #ff9800;
+        color: white;
+    }
+
+    .notification.info {
+        background-color: #2196f3;
+        color: white;
+    }
+</style>
+
+@if (IsVisible)
+{
+    <div class="@GetNotificationClass()" @onclick="HandleClose">
+        <span class="message">@Message</span>
+        <button class="close">x</button>
+    </div>
+}

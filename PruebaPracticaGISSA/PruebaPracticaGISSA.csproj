@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.0" />
+    <PackageReference Include="Radzen.Blazor" Version="4.31.6" />
   </ItemGroup>
 
 </Project>

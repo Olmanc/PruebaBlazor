@@ -2,6 +2,9 @@
 @inject NavigationManager Navigation;
 @layout PruebaPracticaGISSA.Shared.BlankLayout;
 
+
+
+
 <style>
     :root {
         --primary: #4978F0;
@@ -22,6 +25,16 @@
         font-family: Arial;
     }
 
+    .page {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-image: url('https://img.freepik.com/free-vector/cartoon-galaxy-background-with-planets_23-2148966504.jpg?t=st=1715841984~exp=1715845584~hmac=ccf147dacc08cb48ba7692cbc84e989094dd0c55b7b533b7d7308924cade6307&w=826');
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+
     .my-form__wrapper {
         display: flex;
         flex-direction: column;
@@ -32,15 +45,18 @@
         padding: 3rem 2rem;
         height: fit-content;
         box-shadow: rgba(100, 100, 111, 0.4) 0rem 6px 26px 0rem;
-        margin: 0 auto;
-        margin-top: 80px;
+        /* margin: 0 auto;
+        margin-top: 80px; */
         border-radius: 30px;
+        /* background-color: var(--background); */
+        background-color: rgba(240, 240, 240, 0.4);
+        margin: 0 auto;
     }
 
     .my-form {
         display: flex;
         flex-direction: column;
-        justify-content: start;
+        /* justify-content: start; */
         position: relative;
         gap: 1rem;
     }
@@ -142,13 +158,16 @@
 
     .text-field input:focus {
         border: 0.0625rem solid var(--primary);
+            background-color: #dbd4d4;
     }
 
-    .text-field label {
-        color: var(--secondary);
-        font-size: 0.875rem;
-        font-weight: 600;
-        letter-spacing: .03rem;
+    .text-field label, span {
+        /* color: var(--secondary); */
+        color:antiquewhite;
+        /* font-size: 0.875rem; */
+        font-size: 1rem;
+        font-weight: 700;
+        letter-spacing: .04rem;
         z-index: 10;
     }
 
@@ -156,7 +175,10 @@
 
 <PageTitle>Login</PageTitle>
 
-<Login @ref="loginComponent" OnLoginResult="HandleLoginResult" OnForgotPassword="HandleForgotPassword" OnCreateAccount="HandleCreateAccount"></Login>
+<div style="height:100%">
+    <Login @ref="loginComponent" OnLoginResult="HandleLoginResult" OnForgotPassword="HandleForgotPassword" OnCreateAccount="HandleCreateAccount"></Login>
+</div>
+
 
 @if (messageShown)
 {

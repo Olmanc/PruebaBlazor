@@ -1,6 +1,7 @@
 ﻿@page "/fetchdata"
 @using PruebaPracticaGISSA.Data
 @inject WeatherForecastService ForecastService
+@attribute [Authorize(Roles = "1,2")]
 
 <PageTitle>Weather forecast</PageTitle>
 

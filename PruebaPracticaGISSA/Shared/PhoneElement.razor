@@ -3,39 +3,34 @@
         font-family: Arial, sans-serif;
     }
 
-    /* Style for the list items */
     li {
-        list-style-type: none; /* Remove default list style */
-        margin-bottom: 8px; /* Add some vertical spacing between list items */
+        list-style-type: none;
+        margin-bottom: 8px;
         padding: 10px;
         border: solid;
         border-color: gray;
         border-radius: 5px;
     }
 
-        /* Style for the container div inside each list item */
     li > div {
-        display: flex; /* Use flexbox */
-        justify-content: space-between; /* Distribute content evenly, pushing button to the right */
-        align-items: center; /* Center items vertically */
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
-    /* Style for the button */
     .delete {
-        background-color: #f44336; /* Red background color */
-        color: white; /* White text color */
-        border: none; /* Remove border */
-        border-radius: 4px; /* Add some border radius */
-        padding: 4px 10px; /* Add padding */
-        cursor: pointer; /* Show pointer cursor on hover */
+        background-color: #f44336;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        padding: 4px 10px;
+        cursor: pointer;
     }
 </style>
 
 <li>
     <div>
-        <!-- Text aligned to the left -->
         <span>@Telefono</span>
-        <!-- Button aligned to the right -->
         <button class="delete" @onclick="DeleteItem"><i class="fa-regular fa-trash-can"></i>X</button>
     </div>
 </li>

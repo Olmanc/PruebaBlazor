@@ -1,6 +1,8 @@
 ﻿using Microsoft.Data.SqlClient;
+using Newtonsoft.Json;
 using PruebaPracticaGISSA.Models;
 using System.Data;
+using System.Text.Json.Serialization;
 
 
 namespace PruebaPracticaGISSA.Data
@@ -220,6 +222,24 @@ namespace PruebaPracticaGISSA.Data
                 throw ex;
             }
         }
+
+        public List<UserModel> GetAllUsersJson()
+        {
+            try
+            {
+                DataTable users = ExecuteQuery("test_ObtenerUsuariosJSON", new List<SqlParameter>());
+                string json = "";
+                foreach(DataRow r in users.Rows)
+                {
+                    json += r.ItemArray[0].ToString().Trim();
+                }
+                return JsonConvert.DeserializeObject<List<UserModel>>(json);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         public UserModel GetUserData(int userId)
         {
             try
@@ -250,6 +270,30 @@ namespace PruebaPracticaGISSA.Data
                 }
 
                 return userData;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public UserModel GetUserDataJson(int userId)
+        {
+            try
+            {
+                DataTable user = ExecuteQuery("test_ObtenerDatosUsuarioJSON", new List<SqlParameter>()
+                {
+                    new SqlParameter("@idUsuario", userId)
+                });
+
+                UserModel userData = new UserModel();
+                string json = "";
+                foreach (DataRow r in user.Rows)
+                {
+                    json += r.ItemArray[0].ToString().Trim();
+                }
+                return JsonConvert.DeserializeObject<UserModel>(json);
 
             }
             catch (Exception ex)

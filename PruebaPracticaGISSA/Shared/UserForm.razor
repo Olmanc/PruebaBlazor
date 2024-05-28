@@ -233,7 +233,7 @@
                 <ul>
                     @foreach (var telefono in User.Telefonos)
                     {
-                        <PhoneElement Telefono="@telefono" OnDelete="DeletePhone"></PhoneElement>
+                        <PhoneElement Telefono="@telefono.Telefono" OnDelete="DeletePhone"></PhoneElement>
                     }
                 </ul>
             </div>

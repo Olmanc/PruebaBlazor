@@ -1,84 +1,22 @@
 ﻿@using PruebaPracticaGISSA.Data;
 @inject DbService DbService;
 
-<style>
-    figure{
-        margin: 0 0 0rem;
-    }
-/* 
-    .card {
-        position: relative;
-        border: 1px solid #ccc;
-        border-radius: 1rem;
-        overflow: hidden;
-        padding: 1rem;
-    }
 
-    .card img {
-        width: 100%;
-        height: auto;
-        display: block;
-    } */
-
-    .article-preview {
-        padding-top: 1rem;
-    }
-
-    .UserCard {
-        position: relative;
-        border-radius: 8px;
-        overflow: hidden;
-        padding: 1rem;
-        margin-bottom: 1rem;
-        transition: box-shadow 0.3s ease;
-    }
-
-    .UserCard button {
-        position: relative;
-        top: -15rem;
-        right: -17rem;
-        background-color: red;
-        border: none;
-        color: white;
-        width: 1.5rem;
-        height: 1.5rem;
-        border-radius: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 1rem;
-        cursor: pointer;
-        visibility:hidden;
-
-    }
-
-    .UserCard:hover button {
-        opacity: 1;
-        visibility: visible;
-    }
-
-    .UserCard button:hover {
-        background-color: darkred;
-    }
-
-    .UserCard button i {
-    pointer-events: none;
-    }
-</style>
-
-<div class="UserCard">
+<div class="UserCard" @onmouseover="ShowButton" @onmouseout="HideButton">
     <article @onclick="() => OnUserCardClicked(User.Id)">
-        <figure>
+        <figure class="user-card-image">
             <img src="https://img.freepik.com/free-photo/wide-angle-shot-single-tree-growing-clouded-sky-during-sunset-surrounded-by-grass_181624-22807.jpg?w=900&t=st=1687123388~exp=1687123988~hmac=f3410d0a5c2f20aec66c7d763c789bf0aae9c5026366fe41ae7d18e05e7e406b"
                  alt="Preview">
         </figure>
+        
+        
         <div class="article-preview">
             <h2>@User.Nombre @User.PrimerApellido @User.SegundoApellido</h2>
-            <p>
-                @User.TipoUsuario
-            </p>
-            @* <button @onclick="() => DeleteUser(User.Id)">Borrar</button> *@
+            <p>@User.TipoUsuario</p>
         </div>
     </article>
-    <button @onclick="() => DeleteUser(User.Id)">x</button>
+    @if (isButtonVisible)
+    {
+        <button class="red-circle" @onclick="() => DeleteUser(User.Id)">x</button>
+    }
 </div>

@@ -62,7 +62,7 @@ namespace PruebaPracticaGISSA.Pages
             //Users.Add(user2);
             //Users.Add(user3);
 
-            Users = DbService.GetAllUsers();
+            Users = DbService.GetAllUsersJson();
         }
 
         private void showMessage(string title, string message, string imgUrl, MessageWindow.MessageType type)
@@ -113,7 +113,7 @@ namespace PruebaPracticaGISSA.Pages
 
         private void UpdateComponent()
         {
-            Users = DbService.GetAllUsers();
+            Users = DbService.GetAllUsersJson();
             ShowUserForm = false;
             messageShown = false;
             StateHasChanged();

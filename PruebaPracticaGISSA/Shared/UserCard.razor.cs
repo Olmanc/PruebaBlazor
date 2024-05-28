@@ -12,12 +12,23 @@ namespace PruebaPracticaGISSA.Shared
         [Parameter]
         public EventCallback<int> OnButtonClick { get; set; }
 
+        private bool isButtonVisible = false;
+
+        private void ShowButton()
+        {
+            isButtonVisible = true;
+        }
+
+        private void HideButton()
+        {
+            isButtonVisible = false;
+        }
 
         async void OnUserCardClicked(int IdUsuario)
         {
-            UserModel user = DbService.GetUserData(IdUsuario);
-            user.Telefonos = DbService.GetUserPhones(user.Id);
-            user.Habilidades = DbService.GetUserSkills(user.Id);
+            UserModel user = DbService.GetUserDataJson(IdUsuario);
+            //user.Telefonos = DbService.GetUserPhones(user.Id);
+            //user.Habilidades = DbService.GetUserSkills(user.Id);
 
 
             await OnSelected.InvokeAsync(user);

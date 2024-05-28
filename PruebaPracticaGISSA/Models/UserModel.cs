@@ -26,14 +26,14 @@ namespace PruebaPracticaGISSA.Models
         [Required, EmailAddress]
         public string Correo { get; set; }
         [Required]
-        public List<string> Telefonos { get; set; } = new List<string>();
+        public List<TelefonoClass> Telefonos { get; set; } = new List<TelefonoClass>();
         [Required]
-        public List<int> Habilidades { get; set; } = new List<int>();
+        public List<HabilidadClass> Habilidades { get; set; } = new List<HabilidadClass>();
         public string imageUrl { get; set; }
 
         public string TelefonosString{
             get {
-                return String.Join(",", Telefonos);
+                return String.Join(",", Telefonos.Select(x => x.Telefono));
             }
         }
 
@@ -41,8 +41,26 @@ namespace PruebaPracticaGISSA.Models
         {
             get
             {
-                return String.Join(",", Habilidades);
+                return String.Join(",", Habilidades.Select(x => x.IdHabilidad));
             }
+        }
+    }
+
+    public class TelefonoClass
+    {
+        public string Telefono { get; set; }
+        public TelefonoClass(string tel)
+        {
+            Telefono = tel;
+        }
+    }
+
+    public class HabilidadClass
+    {
+        public int IdHabilidad { get; set; }
+        public HabilidadClass(int idHabilidad)
+        {
+            IdHabilidad = idHabilidad;
         }
     }
 }

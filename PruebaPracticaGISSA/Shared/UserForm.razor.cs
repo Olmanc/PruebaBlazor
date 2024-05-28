@@ -46,7 +46,7 @@ namespace PruebaPracticaGISSA.Shared
             
             foreach(var h in catalogoHabilidades)
             {
-                if (User.Habilidades.Contains(h.Id))
+                if (User.Habilidades.Select(x => x.IdHabilidad).Contains(h.Id))
                 {
                     h.Seleccionado = true;
                 }
@@ -64,14 +64,14 @@ namespace PruebaPracticaGISSA.Shared
                     return;
                 }
 
-                if (User.Telefonos.Contains(Telefono))
+                if (User.Telefonos.Select(x => x.Telefono).Contains(Telefono))
                 {
                     MessageWindowModel msg = new MessageWindowModel("Valdación", "El teléfono ya se encuentra agregado.", "", MessageType.Warning);
                     await OnShowMessage.InvokeAsync(msg);
                     return;
                 }
 
-                User.Telefonos.Add(Telefono);
+                User.Telefonos.Add(new TelefonoClass(Telefono));
                 Telefono = string.Empty;
                 
             }
@@ -88,11 +88,12 @@ namespace PruebaPracticaGISSA.Shared
             {
                 if (Convert.ToBoolean(checkboxValue))
                 {
-                    User.Habilidades.Add(habilidadId);
+                    User.Habilidades.Add(new HabilidadClass(habilidadId));
                 }
                 else
                 {
-                    User.Habilidades.Remove(habilidadId);
+                    var habilidadToRemove = User.Habilidades.FirstOrDefault(h => h.IdHabilidad == habilidadId);
+                    User.Habilidades.Remove(habilidadToRemove);
                 }
             }
             catch(Exception ex)
@@ -106,11 +107,17 @@ namespace PruebaPracticaGISSA.Shared
         {
             try
             {
-                if (User.Telefonos.Contains(Telefono))
+                //if (User.Telefonos.Select(x => x.Telefono).Contains(Telefono))
+                //{
+                //    User.Telefonos.Remove(new TelefonoClass(Telefono)));
+                //}
+                var telefonoToRemove = User.Telefonos.FirstOrDefault(t => t.Telefono == Telefono);
+                if (telefonoToRemove != null)
                 {
-                    User.Telefonos.Remove(Telefono);
+                    User.Telefonos.Remove(telefonoToRemove);
                 }
-            }catch(Exception ex)
+            }
+            catch(Exception ex)
             {
                 MessageWindowModel msg = new MessageWindowModel("Error", "Error eliminando el teléfono, " + ex.Message, "", MessageType.Error);
                 await OnShowMessage.InvokeAsync(msg);
